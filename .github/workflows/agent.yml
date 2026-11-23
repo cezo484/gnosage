@@ -27,8 +27,9 @@ jobs:
       - name: Import agent key (throwaway testnet key)
         env:
           AGENT_MNEMONIC: ${{ secrets.AGENT_MNEMONIC }}
+          GNOKEY_PASSWORD: ${{ secrets.GNOKEY_PASSWORD }}
         run: |
-          printf '%s\n' "$AGENT_MNEMONIC" | gnokey add gnosage-agent --recover --quiet
+          printf '%s\n%s\n%s\n' "$AGENT_MNEMONIC" "$GNOKEY_PASSWORD" "$GNOKEY_PASSWORD" | gnokey add gnosage-agent --recover --quiet --insecure-password-stdin
           gnokey list
 
       - name: Install agent dependencies
@@ -42,4 +43,5 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GNOSAGE_REALM: ${{ secrets.GNOSAGE_REALM }}
           AGENT_KEY_NAME: gnosage-agent
+          GNOKEY_PASSWORD: ${{ secrets.GNOKEY_PASSWORD }}
         run: npm run run
